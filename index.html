@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Valentine Special</title>
+
+  <style>
+    :root{
+      --bg: #f6f6f4;         /* white but not pure */
+      --ink: #0f0f10;        /* deep black */
+      --red: #e10600;        /* accent red */
+      --muted: #9a9aa0;      /* soft gray */
+      --card: rgba(255,255,255,.75);
+      --shadow: 0 18px 50px rgba(0,0,0,.12);
+      --radius: 22px;
+      --max: 1180px;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--ink);
+      background:
+        radial-gradient(900px 500px at 20% 10%, rgba(225,6,0,.10), transparent 60%),
+        radial-gradient(800px 480px at 80% 20%, rgba(225,6,0,.08), transparent 55%),
+        radial-gradient(700px 500px at 50% 90%, rgba(0,0,0,.06), transparent 55%),
+        var(--bg);
+      overflow-x:hidden;
+    }
+
+    .blobs{
+      position: fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:-1;
+      opacity:.45;
+    }
+    .blob{
+      position:absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 999px;
+      background: rgba(225,6,0,.12);
+      animation: float 12s ease-in-out infinite;
+      mix-blend-mode: multiply;
+    }
+    .blob.b2{ width:280px;height:280px; background: rgba(0,0,0,.08); animation-duration: 16s; }
+    .blob.b3{ width:200px;height:200px; background: rgba(225,6,0,.10); animation-duration: 14s; }
+
+    @keyframes float{
+      0%,100%{ transform: translate(0,0) scale(1); }
+      50%{ transform: translate(25px,-20px) scale(1.06); }
+    }
+
+    .wrap{
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 26px 18px 70px;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding: 14px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.55);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 35px rgba(0,0,0,.06);
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:700;
+      letter-spacing:.2px;
+    }
+    .mark{
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--red), #ff4d4d);
+      box-shadow: 0 10px 25px rgba(225,6,0,.18);
+    }
+    .nav{
+      display:flex;
+      gap:16px;
+      font-size:14px;
+      color: rgba(15,15,16,.7);
+    }
+    .nav a{
+      color: inherit;
+      text-decoration:none;
+      padding:8px 10px;
+      border-radius: 999px;
+    }
+    .nav a:hover{ background: rgba(0,0,0,.05); }
+
+    /* HERO (SIZES UNCHANGED) */
+    .hero{
+      margin-top: 22px;
+      display:grid;
+      grid-template-columns: 1fr minmax(320px, 520px) 1fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .media{
+      border-radius: var(--radius);
+      overflow:hidden;
+      min-height: 520px;            /* keep the existing size */
+      box-shadow: var(--shadow);
+      position:relative;
+      background:#ddd;
+      transition: transform .35s ease, filter .35s ease;
+    }
+    .media:hover{ transform: translateY(-6px); }
+
+    .media::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(500px 260px at 50% 10%, rgba(255,255,255,.30), transparent 60%),
+        radial-gradient(450px 280px at 50% 90%, rgba(0,0,0,.18), transparent 60%);
+      pointer-events:none;
+    }
+
+    /* Video fills container without changing container size */
+    .media video{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+      transform: scale(1.02);
+    }
+    .media.left video{ filter: saturate(1.15) contrast(1.05); }
+    .media.right video{ filter: grayscale(.10) saturate(1.2) contrast(1.05); }
+
+    .centerCard{
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.70);
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+      padding: 26px 22px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      min-height: 520px;            /* keep the existing size */
+      position:relative;
+      overflow:hidden;
+    }
+    .centerCard::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: linear-gradient(135deg, rgba(225,6,0,.20), transparent 40%, rgba(0,0,0,.10));
+      opacity:.55;
+      pointer-events:none;
+      filter: blur(18px);
+    }
+    .centerCard > *{ position:relative; }
+
+    .kicker{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      font-size:13px;
+      color: rgba(15,15,16,.70);
+      letter-spacing:.2px;
+      margin-bottom: 10px;
+    }
+    .dot{
+      width: 8px;
+      height: 8px;
+      border-radius: 99px;
+      background: var(--red);
+      box-shadow: 0 8px 20px rgba(225,6,0,.25);
+    }
+
+    h1{
+      margin: 0 0 10px;
+      font-size: clamp(30px, 3.6vw, 44px);
+      line-height: 1.05;
+      letter-spacing: -0.6px;
+    }
+    .sub{
+      margin:0 0 18px;
+      font-size: 15px;
+      line-height: 1.5;
+      color: rgba(15,15,16,.72);
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin: 14px 0 16px;
+    }
+    .btn{
+      border:0;
+      border-radius: 999px;
+      padding: 12px 14px;
+      font-weight: 600;
+      cursor:pointer;
+      transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+    }
+    .btn.primary{
+      background: var(--ink);
+      color: #fff;
+      box-shadow: 0 12px 25px rgba(0,0,0,.18);
+    }
+    .btn.primary:hover{ transform: translateY(-1px); }
+    .btn.ghost{
+      background: rgba(0,0,0,.05);
+      color: var(--ink);
+    }
+    .btn.ghost:hover{ background: rgba(0,0,0,.08); transform: translateY(-1px); }
+
+    .chipRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 6px;
+    }
+    .chip{
+      font-size: 12px;
+      color: rgba(15,15,16,.70);
+      border: 1px solid rgba(0,0,0,.10);
+      background: rgba(255,255,255,.55);
+      padding: 8px 10px;
+      border-radius: 999px;
+    }
+    .chip strong{ color: rgba(15,15,16,.9); font-weight:700; }
+
+    /* Spotify size unchanged */
+    .player{
+      margin-top: 12px;
+      border-radius: 18px;
+      overflow:hidden;
+      box-shadow: 0 14px 35px rgba(0,0,0,.12);
+      border: 1px solid rgba(0,0,0,.06);
+    }
+    .player iframe{
+      display:block;
+      width:100%;
+      height: 352px;  /* unchanged */
+      border:0;
+    }
+
+    /* GALLERY */
+    .section{
+      margin-top: 34px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .tile{
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.65);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      min-height: 240px;
+      overflow:hidden;
+      position:relative;
+    }
+    .tile .img{
+      height: 350px;
+      border-radius: 18px;
+      overflow:hidden;
+      box-shadow: 0 12px 28px rgba(0,0,0,.12);
+      border: 1px solid rgba(0,0,0,.06);
+      background: #ddd;
+    }
+    .tile .img img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+      transform: scale(1.02);
+    }
+    /* Same images, different “colors” via filters (no size changes) */
+    .tone-red img{ filter: saturate(1.25) contrast(1.05); }
+    .tone-bw img{ filter: grayscale(1) contrast(1.1); }
+    .tone-warm img{ filter: sepia(.25) saturate(1.2) contrast(1.05); }
+    .tone-cool img{ filter: hue-rotate(-12deg) saturate(1.15) contrast(1.05); }
+
+    .tile h3{
+      margin: 14px 0 6px;
+      font-size: 18px;
+      letter-spacing: -0.2px;
+    }
+    .tile p{
+      margin:0;
+      color: rgba(15,15,16,.72);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .footer{
+      margin-top: 34px;
+      border-radius: calc(var(--radius) + 6px);
+      background: var(--ink);
+      color: rgba(255,255,255,.88);
+      padding: 22px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+      position:relative;
+      overflow:hidden;
+    }
+    .footer::before{
+      content:"";
+      position:absolute;
+      inset:-40px;
+      background: radial-gradient(450px 220px at 20% 30%, rgba(225,6,0,.35), transparent 60%),
+                  radial-gradient(520px 250px at 80% 70%, rgba(225,6,0,.22), transparent 60%);
+      opacity:.7;
+    }
+    .footer > *{ position:relative; }
+    .footer h2{
+      margin:0 0 8px;
+      font-size: 22px;
+      letter-spacing:-0.2px;
+    }
+    .footer p{
+      margin:0 0 14px;
+      color: rgba(255,255,255,.78);
+      line-height:1.55;
+      max-width: 62ch;
+    }
+    .footer .btnRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .btn.red{
+      background: var(--red);
+      color: #fff;
+      box-shadow: 0 14px 30px rgba(225,6,0,.20);
+    }
+    .btn.red:hover{ transform: translateY(-1px); }
+
+    @media (max-width: 980px){
+      .hero{ grid-template-columns: 1fr; }
+      .media{ min-height: 360px; } /* existing responsive behavior */
+      .centerCard{ min-height: auto; }
+      .section{ grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="blobs" aria-hidden="true">
+    <div class="blob" style="left:6%; top:12%;"></div>
+    <div class="blob b2" style="left:72%; top:6%;"></div>
+    <div class="blob b3" style="left:40%; top:78%;"></div>
+  </div>
+
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <span class="mark"></span>
+        <span>Valentine Special</span>
+      </div>
+      <nav class="nav">
+        <a href="#song">Song</a>
+        <a href="#moments">Moments</a>
+        <a href="#note">Note</a>
+      </nav>
+    </header>
+
+    <main>
+      <!-- HERO: videos left & right (sizes unchanged) -->
+      <section class="hero" id="song">
+        <div class="media left" aria-label="Hero video left">
+          <!-- Put these video files in the SAME folder as this HTML file -->
+          <video autoplay muted loop playsinline preload="metadata">
+            <source src="VID-20260206-WA0057.mp4" type="video/mp4" />
+          </video>
+        </div>
+
+        <div class="centerCard">
+          <div>
+            <div class="kicker"><span class="dot"></span><span>Valentine Edition • White / Black / Red</span></div>
+            <h1>Our little page of music & memories.</h1>
+            <p class="sub">
+              Press play, scroll slow, and let this feel like a soft love letter — clean, modern, and calm.
+            </p>
+
+            <div class="actions">
+              <button class="btn primary" id="scrollToPlayer" type="button">Play the song</button>
+              <button class="btn ghost" id="scrollToMoments" type="button">Go to moments</button>
+            </div>
+
+            <div class="chipRow">
+              <span class="chip"><strong>Theme:</strong> Valentine</span>
+              <span class="chip"><strong>Accent:</strong> Red</span>
+              <span class="chip"><strong>Vibe:</strong> Editorial</span>
+            </div>
+          </div>
+
+          <div class="player" aria-label="Spotify player">
+            <!-- Your exact Spotify embed (size unchanged) -->
+            <iframe data-testid="embed-iframe"
+              style="border-radius:12px"
+              src="https://open.spotify.com/embed/track/5hETlo1LKegxGd0jTrsH1a?utm_source=generator&theme=0"
+              width="100%"
+              height="352"
+              frameBorder="0"
+              allowfullscreen=""
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="lazy">
+            </iframe>
+          </div>
+        </div>
+
+        <div class="media right" aria-label="Hero video right">
+          <video autoplay muted loop playsinline preload="metadata">
+            <source src="VID-20260207-WA0397.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </section>
+
+    
+      <section class="section" id="moments">
+        <article class="tile">
+          <div class="img tone-red" aria-label="Moment 1">
+            <img src="20250812_161144.jpg" alt="Moment 1" />
+          </div>
+          <h3>Soft smiles</h3>
+          <p>Little moments that feel like home — no noise, no rush.</p>
+        </article>
+
+        <article class="tile">
+          <div class="img tone-bw" aria-label="Moment 2">
+            <img src="IMG-20260206-WA0086.jpeg" alt="Moment 2" />
+          </div>
+          <h3>Late night talks</h3>
+          <p>The kind of conversations that make time disappear.</p>
+        </article>
+
+        <article class="tile">
+          <div class="img tone-warm" aria-label="Moment 3">
+            <img src="20250620_131255.jpg" alt="Moment 3" />
+          </div>
+          <h3>Everyday magic</h3>
+          <p>Not perfect. Just real. And somehow even better.</p>
+        </article>
+
+        <article class="tile">
+          <div class="img tone-cool" aria-label="Moment 4">
+            <img src="IMG-20250101-WA0034.jpg" alt="Moment 4" />
+          </div>
+          <h3>Safe place</h3>
+          <p>Where love feels calm, warm, and certain.</p>
+        </article>
+      </section>
+
+      <section class="footer" id="note">
+        <h2>Love is quiet. Love is warm. Love is home.</h2>
+        <p>
+          Let the clocks rust and the calendars fade, A love like ours wasn't simply made To fit within a day, 
+          an hour, or a line— You are my forever, not just my Valentine.
+        </p>
+
+        <div class="btnRow">
+          <button class="btn red" id="shareBtn" type="button">Share this page</button>
+          <button class="btn ghost" id="howBtn" type="button">How to use my files</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // Smooth scroll helpers
+    document.getElementById('scrollToMoments').addEventListener('click', () => {
+      document.getElementById('moments').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    document.getElementById('scrollToPlayer').addEventListener('click', () => {
+      document.querySelector('.player').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
+    // Share
+    document.getElementById('shareBtn').addEventListener('click', async () => {
+      const data = { title: document.title, text: "A Valentine page with music + memories.", url: window.location.href };
+      try {
+        if (navigator.share) await navigator.share(data);
+        else {
+          await navigator.clipboard.writeText(window.location.href);
+          alert("Link copied ✅");
+        }
+      } catch (e) {}
+    });
+
+    // Quick setup note
+    document.getElementById('howBtn').addEventListener('click', () => {
+      alert(
+        "Setup:\n\n" +
+        "Put these files in the same folder as this HTML:\n" +
+        "• VID-20260206-WA0057.mp4\n" +
+        "• VID-20260206-WA0062.mp4\n" +
+        "• IMG-20241102-WA0006.jpg\n" +
+        "• IMG-20241101-WA0070.jpg\n\n" +
+        "Then open the HTML file in your browser."
+      );
+    });
+  </script>
+</body>
+</html>
